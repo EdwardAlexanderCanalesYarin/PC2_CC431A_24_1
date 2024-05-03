@@ -1,6 +1,6 @@
 import tempfile
 import os
-from flask import Flask, request, redirect, send_file, render_template
+from flask import Flask, request, redirect, send_file
 from skimage import io
 from skimage.transform import resize
 import base64
@@ -32,7 +32,7 @@ main_html = """
 	      random = Math.floor(Math.random() * letra.length);
 	      aleatorio = letra[random];
 
-	      document.getElementById('mensaje').innerHTML  = 'Escribe el simbolo de la aldea escondida entre ' + aleatorio;
+	      document.getElementById('mensaje').innerHTML  = 'Dibuja el simbolo de la aldea desconocida ' + aleatorio;
 	      document.getElementById('numero').value = aleatorio;
 
 	      $('#myCanvas').mousedown(function (e) {
@@ -106,30 +106,15 @@ main_html = """
 			      <input id="myImage" name="myImage" type="hidden" value="">
 			      <input id="bt_upload" type="submit" value="prepara datos">
 		      </form>
-		      <form method="get" action="Niebla.npy" onsubmit="javascript:prepareImg();"  enctype="multipart/form-data">
+		      <form method="get" action="X.npy" onsubmit="javascript:prepareImg();"  enctype="multipart/form-data">
 			      <input id="numero" name="numero" type="hidden" value="">
 			      <input id="myImage" name="myImage" type="hidden" value="">
-			      <input id="bt_upload" type="submit" value="descargar Niebla">
+			      <input id="bt_upload" type="submit" value="descargar x">
 		      </form>
-		      <form method="get" action="Roca.npy" onsubmit="javascript:prepareImg();"  enctype="multipart/form-data">
+		      <form method="get" action="y.npy" onsubmit="javascript:prepareImg();"  enctype="multipart/form-data">
 			      <input id="numero" name="numero" type="hidden" value="">
 			      <input id="myImage" name="myImage" type="hidden" value="">
-			      <input id="bt_upload" type="submit" value="decargar Roca">
-		      </form>
-		      <form method="get" action="Hojas.npy" onsubmit="javascript:prepareImg();"  enctype="multipart/form-data">
-			      <input id="numero" name="numero" type="hidden" value="">
-			      <input id="myImage" name="myImage" type="hidden" value="">
-			      <input id="bt_upload" type="submit" value="decargar Hojas">
-		      </form>
-		      <form method="get" action="Arena.npy" onsubmit="javascript:prepareImg();"  enctype="multipart/form-data">
-			      <input id="numero" name="numero" type="hidden" value="">
-			      <input id="myImage" name="myImage" type="hidden" value="">
-			      <input id="bt_upload" type="submit" value="decargar Arena">
-		      </form>
-		      <form method="get" action="Nubes.npy" onsubmit="javascript:prepareImg();"  enctype="multipart/form-data">
-			      <input id="numero" name="numero" type="hidden" value="">
-			      <input id="myImage" name="myImage" type="hidden" value="">
-			      <input id="bt_upload" type="submit" value="decargar Nubes">
+			      <input id="bt_upload" type="submit" value="decargar y">
 		      </form>
 		</div>
 		
@@ -146,14 +131,14 @@ main_html = """
 """ 
 @app.route("/")
 def main():
-    render_template('index.html')
+    return(main_html)
 
 @app.route('/upload', methods=['POST'])
 def upload():
     try:
         img_data = request.form.get('myImage').replace("data:image/png;base64,", "")
         aleatorio = request.form.get('numero')
-        folder_id = '1bjhGYXx9opwIgZj4FO95we5TpBep92S7'  # Reemplaza con la ID de tu carpeta en Google Drive
+        folder_id = '1SAexmaIUn4_SlQUiPLWjDuZcZiSiMuzy'  # Reemplaza con la ID de tu carpeta en Google Drive
         file_name = aleatorio + '_image.png'
         with tempfile.NamedTemporaryFile(delete = False, mode = "w+b", suffix='.png', dir=str(aleatorio)) as fh:
             fh.write(base64.b64decode(img_data))
@@ -166,36 +151,28 @@ def upload():
     
 @app.route('/prepare', methods=['GET'])
 def prepare_dataset():
+    images = []
     d = ["Niebla","Roca","Hojas","Arena","Nubes"]
+    digits = []
     for digit in d:
-        images = []
-        filelist = glob.glob('{}/*.png'.format(digit))
-        images_read = io.concatenate_images(io.imread_collection(filelist))
-        images_read = images_read[:, :, :, 3]
-        images.append(images_read)
-        images = np.vstack(images)
-        np.save('{}.npy'.format(digit), images)
-    return "Data set procesado exitosamente"
+      filelist = glob.glob('{}/*.png'.format(digit))
+      images_read = io.concatenate_images(io.imread_collection(filelist))
+      images_read = images_read[:, :, :, 3]
+      digits_read = np.array([digit] * images_read.shape[0])
+      images.append(images_read)
+      digits.append(digits_read)
+    images = np.vstack(images)
+    digits = np.concatenate(digits)
+    np.save('X.npy', images)
+    np.save('y.npy', digits)
+    return "El data set ha sido procesado exitosamente"
 
-@app.route('/Niebla.npy', methods=['GET'])
-def download_Niebla():
-    return send_file('./Niebla.npy')
-
-@app.route('/Roca.npy', methods=['GET'])
-def download_Roca():
-    return send_file('./Roca.npy')
-
-@app.route('/Hojas.npy', methods=['GET'])
-def download_Hojas():
-    return send_file('./Hojas.npy')
-
-@app.route('/Arena.npy', methods=['GET'])
-def download_Arena():
-    return send_file('./Arena.npy')
-
-@app.route('/Nubes.npy', methods=['GET'])
-def download_Nubes():
-    return send_file('./Nubes.npy')
+@app.route('/X.npy', methods=['GET'])
+def download_X():
+    return send_file('./X.npy')
+@app.route('/y.npy', methods=['GET'])
+def download_y():
+    return send_file('./y.npy')
     
 if __name__ == "__main__":
     
