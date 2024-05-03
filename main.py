@@ -131,7 +131,7 @@ main_html = """
 """ 
 @app.route("/")
 def main():
-    return(main_html)
+    render_template(index.html)
 
 @app.route('/upload', methods=['POST'])
 def upload():
