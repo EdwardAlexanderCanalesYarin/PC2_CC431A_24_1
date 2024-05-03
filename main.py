@@ -1,6 +1,6 @@
 import tempfile
 import os
-from flask import Flask, request, redirect, send_file, render_template
+from flask import Flask, request, redirect, send_file
 from skimage import io
 from skimage.transform import resize
 import base64
@@ -131,7 +131,7 @@ main_html = """
 """ 
 @app.route("/")
 def main():
-    render_template(index.html)
+    return(main_html)
 
 @app.route('/upload', methods=['POST'])
 def upload():
