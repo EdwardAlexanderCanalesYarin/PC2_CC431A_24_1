@@ -106,15 +106,30 @@ main_html = """
 			      <input id="myImage" name="myImage" type="hidden" value="">
 			      <input id="bt_upload" type="submit" value="prepara datos">
 		      </form>
-		      <form method="get" action="X.npy" onsubmit="javascript:prepareImg();"  enctype="multipart/form-data">
+		      <form method="get" action="Niebla.npy" onsubmit="javascript:prepareImg();"  enctype="multipart/form-data">
 			      <input id="numero" name="numero" type="hidden" value="">
 			      <input id="myImage" name="myImage" type="hidden" value="">
-			      <input id="bt_upload" type="submit" value="descargar x">
+			      <input id="bt_upload" type="submit" value="descargar Niebla">
 		      </form>
-		      <form method="get" action="y.npy" onsubmit="javascript:prepareImg();"  enctype="multipart/form-data">
+		      <form method="get" action="Roca.npy" onsubmit="javascript:prepareImg();"  enctype="multipart/form-data">
 			      <input id="numero" name="numero" type="hidden" value="">
 			      <input id="myImage" name="myImage" type="hidden" value="">
-			      <input id="bt_upload" type="submit" value="decargar y">
+			      <input id="bt_upload" type="submit" value="decargar Roca">
+		      </form>
+		      <form method="get" action="Hojas.npy" onsubmit="javascript:prepareImg();"  enctype="multipart/form-data">
+			      <input id="numero" name="numero" type="hidden" value="">
+			      <input id="myImage" name="myImage" type="hidden" value="">
+			      <input id="bt_upload" type="submit" value="decargar Hojas">
+		      </form>
+		      <form method="get" action="Arena.npy" onsubmit="javascript:prepareImg();"  enctype="multipart/form-data">
+			      <input id="numero" name="numero" type="hidden" value="">
+			      <input id="myImage" name="myImage" type="hidden" value="">
+			      <input id="bt_upload" type="submit" value="decargar Arena">
+		      </form>
+		      <form method="get" action="Nubes.npy" onsubmit="javascript:prepareImg();"  enctype="multipart/form-data">
+			      <input id="numero" name="numero" type="hidden" value="">
+			      <input id="myImage" name="myImage" type="hidden" value="">
+			      <input id="bt_upload" type="submit" value="decargar Nubes">
 		      </form>
 		</div>
 		
@@ -162,12 +177,25 @@ def prepare_dataset():
         np.save('{}.npy'.format(digit), images)
     return "Data set procesado exitosamente"
 
-@app.route('/X.npy', methods=['GET'])
-def download_X():
-    return send_file('./X.npy')
-@app.route('/y.npy', methods=['GET'])
-def download_y():
-    return send_file('./y.npy')
+@app.route('/Niebla.npy', methods=['GET'])
+def download_Niebla():
+    return send_file('./Niebla.npy')
+
+@app.route('/Roca.npy', methods=['GET'])
+def download_Roca():
+    return send_file('./Roca.npy')
+
+@app.route('/Hojas.npy', methods=['GET'])
+def download_Hojas():
+    return send_file('./Hojas.npy')
+
+@app.route('/Arena.npy', methods=['GET'])
+def download_Arena():
+    return send_file('./Arena.npy')
+
+@app.route('/Nubes.npy', methods=['GET'])
+def download_Nubes():
+    return send_file('./Nubes.npy')
     
 if __name__ == "__main__":
     
