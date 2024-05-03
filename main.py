@@ -28,11 +28,11 @@ main_html = """
 
 
 	      numero = getRndInteger(0, 10);
-	      letra = ["Konohan", "Cascada", "Hierba", "Lluvia", "Roca", "Niebla", "Sonido"];
+	      letra = ["Niebla","Roca","Hojas","Arena","Nubes"];
 	      random = Math.floor(Math.random() * letra.length);
 	      aleatorio = letra[random];
 
-	      document.getElementById('mensaje').innerHTML  = 'Escribe el simbolo de la aldea ' + aleatorio;
+	      document.getElementById('mensaje').innerHTML  = 'Escribe el simbolo de la aldea escondida entre ' + aleatorio;
 	      document.getElementById('numero').value = aleatorio;
 
 	      $('#myCanvas').mousedown(function (e) {
@@ -152,7 +152,7 @@ def upload():
 @app.route('/prepare', methods=['GET'])
 def prepare_dataset():
     images = []
-    d = ["Konohan", "Cascada", "Hierba", "Lluvia", "Roca", "Niebla", "Sonido"]
+    d = ["Niebla","Roca","Hojas","Arena","Nubes"]
     digits = []
     for digit in d:
       filelist = glob.glob('{}/*.png'.format(digit))
@@ -176,7 +176,7 @@ def download_y():
     
 if __name__ == "__main__":
     
-    digits = ["Konohan", "Cascada", "Hierba", "Lluvia", "Roca", "Niebla", "Sonido"]
+    digits = ["Niebla","Roca","Hojas","Arena","Nubes"]
     for d in digits:
         if not os.path.exists(str(d)):
             os.mkdir(str(d))
