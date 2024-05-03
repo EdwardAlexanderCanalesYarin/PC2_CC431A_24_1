@@ -1,6 +1,6 @@
 import tempfile
 import os
-from flask import Flask, request, redirect, send_file
+from flask import Flask, request, redirect, send_file, render_template
 from skimage import io
 from skimage.transform import resize
 import base64
