@@ -151,21 +151,16 @@ def upload():
     
 @app.route('/prepare', methods=['GET'])
 def prepare_dataset():
-    images = []
     d = ["Niebla","Roca","Hojas","Arena","Nubes"]
-    digits = []
     for digit in d:
-      filelist = glob.glob('{}/*.png'.format(digit))
-      images_read = io.concatenate_images(io.imread_collection(filelist))
-      images_read = images_read[:, :, :, 3]
-      digits_read = np.array([digit] * images_read.shape[0])
-      images.append(images_read)
-      digits.append(digits_read)
-    images = np.vstack(images)
-    digits = np.concatenate(digits)
-    np.save('X.npy', images)
-    np.save('y.npy', digits)
-    return "Data set procesado exitosamente"
+        images = []
+        filelist = glob.glob('{}/*.png'.format(digit))
+        images_read = io.concatenate_images(io.imread_collection(filelist))
+        images_read = images_read[:, :, :, 3]
+        images.append(images_read)
+        images = np.vstack(images)
+        np.save('{}.npy'.format(digit), images)
+    return "Data set procesado exitosamente"
 
 @app.route('/X.npy', methods=['GET'])
 def download_X():
